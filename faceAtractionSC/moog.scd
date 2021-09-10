@@ -1,19 +1,34 @@
 s.boot;
 // Play it with the mouse...
-x = { MoogFF.ar(WhiteNoise.ar(01.1), MouseY.kr(100, 10000,1), MouseX.kr(0, 4)) !2 }.play(s);
+
+~path1 =  "/Users/misaelfelix2/Desktop/moog_design.wav"
+~buf1 = Buffer.read(s,~path1,bufnum:1);
+~buf1.play;
+x = { MoogFF.ar([WhiteNoise.ar(0.2),PlayBuf.ar(2,1,1,doneAction:2)], MouseY.kr(100, 10000,1), MouseX.kr(0, 4)) !2 }.play(s);
+
 x.free;
 
-{ MoogLadder.ar(Mix(LFSaw.ar([120, 180], 0, 0.33)), LinExp.kr(LFCub.kr(0.1, 0.5*pi), -1, 1, 180, 8500), 0.75).dup }.play
+(
+SynthDef(\amlo,{|reset 0, amp 0.7, res 2, freq 100|
+	var play;
+	//En lugar del MouseY iría freq y recibe la instrucción desde Processing
+	play =  MoogFF.ar([WhiteNoise.ar(0.2),PlayBuf.ar(2,1,1,doneAction:2)], MouseY.kr(100, 10000,1), res,reset) !2;
+	Out.ar(0,play*amp);
+}).add
+)
+
+Synth(\amlo);
+
+
 (
 o= OSCdef(\bounce, {arg msg, time, addr, recvPort;
-	var rt, amp, bn;
+	var cut, amp;
 
 	[msg,time,addr,recvPort].postln;
 
-	rt = msg[1];
+	cut = msg[1];
 	amp = msg[2];
-	bn = msg[3];
-	Synth(\gota,[\rate, rt,\amp,amp,\bn,bn]);
+	Synth(\amlo,[\freq, cut,\amp,amp]);
 },'\kontrol',nil);
 )
 
