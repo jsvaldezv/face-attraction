@@ -5,6 +5,8 @@
 
 // Showing how to use applyForce() with box2d
 
+float x = 0, y = 0;
+
 class Mover {
 
   // We need to keep track of a Body and a radius
@@ -43,7 +45,8 @@ class Mover {
     body.applyForce(v, body.getWorldCenter());
   }
 
-  void display() {
+  void display() 
+  {
     // We look at each body and get its screen position
     Vec2 pos = box2d.getBodyPixelCoord(body);
     // Get its angle of rotation
@@ -58,5 +61,17 @@ class Mover {
     // Let's add a line so we can see the rotation
     line(0,0,r,0);
     popMatrix();
+
+
+    x = pos.x;
+    y = pos.y;
+  }
+
+  float getX(){
+    return x;
+  }
+
+  float getY(){
+    return y;
   }
 }
