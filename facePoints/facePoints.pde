@@ -24,9 +24,9 @@ ResultList<ObjectDetectionResult> detections;
 ResultList<FacialLandmarkResult> markedFaces;
 
 // POSICIONES DE PUNTOS
-int cejaX = 0, cejaY = 0;
-int bocaX = 0, bocaY = 0;
-int caraX = 0, caraY = 0;
+float cejaX = 0, cejaY = 0;
+float bocaX = 0, bocaY = 0;
+float caraX = 0, caraY = 0;
 
 // ************************************************** SETUP ******************************************************* //
 public void setup() 
@@ -37,7 +37,6 @@ public void setup()
     println("creating network...");
     faceNetwork = vision.createCascadeFrontalFace();
     facemark = vision.createFacemarkLBF();
-
 
     println("loading model...");
     faceNetwork.setup();
@@ -66,9 +65,6 @@ public void draw()
     detections = faceNetwork.run(cam);
 
     markedFaces = facemark.runByDetections(cam, detections);
-
-    // CREAR MENSAJE OSC
-    OscMessage msg = new OscMessage("/points");
 
     for (int i = 0; i < detections.size(); i++) 
     {
@@ -118,6 +114,20 @@ public void draw()
         }
     }
 
+    // MAPPING
+    cejaX = map(cejaX, 0, 640, 1, 30);
+    cejaY = map(cejaY, 0, 480, 50, 700);
+    
+    bocaX = map(bocaX, 0, 640, 100, 10000);
+    bocaY = map(bocaY, 0, 480, 0.01, 3);
+    
+    caraX = map(caraX, 0, 640, 0.4, 1);
+    caraY = map(caraY, 0, 480, 0, 1);
+
+    // CREAR MENSAJE OSC
+    OscMessage msg = new OscMessage("/points");
+
+    // CONSTRUIR MENSAJE
     msg.add(cejaX);
     msg.add(cejaY);
 
