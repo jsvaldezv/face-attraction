@@ -62,7 +62,7 @@ public void setup()
     //CREAR OBJETO DE OSC PARA RECIBIR
     osc = new OscP5(this, 12000);
     //CREAR OBJETO PARA MANDAR INFO
-    remote = new NetAddress("127.0.0.1", 57121);
+    remote = new NetAddress("127.0.0.1", 57120);
 }
 
 public void draw() 
@@ -114,19 +114,19 @@ public void draw()
 
         float dis = sqrt(pow((xPos-circleX),2) + pow((yPos-circleY),2));
 
-        cut = map(dis, 0, 640, 0, 1);
+        cut = map(dis, 0, 640, 100, 10000);
         //println(cut);
     }
 
     cont++;
 
-    if(cont >= 50)
-    {
-        OscMessage msg = new OscMessage("/bounce");
+    //if(cont >= 50)
+    //{
+        OscMessage msg = new OscMessage("/kontrol");
         msg.add(cut);
         msg.add(1);
         osc.send(msg, remote);
 
         cont = 0;
-    }
+    //}
 }
