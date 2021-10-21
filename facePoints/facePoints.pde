@@ -50,7 +50,14 @@ public void setup()
     //CREAR OBJETO DE OSC PARA RECIBIR
     osc = new OscP5(this, 12000);
     //CREAR OBJETO PARA MANDAR INFO
+    
+    // PARA CONFIGURAR IP...
+    //SI ES LOCAL
     remote = new NetAddress("127.0.0.1", 57120);
+    //SI SE VA A MANDAR A MISA
+    //remote = new NetAddress("25.57.148.229", 57120);
+    //SI SE VA A MANDAR A JESUS
+    //remote = new NetAddress("25.55.80.116", 57120);
 }
 
 // ************************************************** DRAW ******************************************************* //

@@ -1,7 +1,9 @@
 s.boot;
 Server.killAll;
 
-( // load this first - synth def
+//************************** FIRST SYNTH ***************************//
+// EJECUTAR
+(
 SynthDef(\harpsi, {
 	arg outbus = 0, freq = 440, ffreq = 2, amp = 1, gate = 1, release = 1;
 	var out;
@@ -14,14 +16,11 @@ SynthDef(\harpsi, {
 }).add;
 )
 
+// EJECUTAR
 h = Synth(\harpsi);
 
-//MOVER CEJAS
-//MOVER BOCA
-// MOVER CABEZA
-
-
-( // then run this - sequence
+// EJECUTAR
+(
 TempoClock.default.tempo = 1.4;
 ~scale = Scale.new(#[0,2,4,5,7,8,10],tuning: \pythagorean, name: "hijaz");
 p = Pbind(
@@ -40,40 +39,45 @@ p = Pbind(
 ).play;
 )
 
+// EJECUTAR
 p = Synth(\harpsi);
-p.set(\freq,200);
-p.set(\ffreq,300);
 
-
+//************************** SECOND SYNTH ***************************//
+// EJECUTAR
 (
 SynthDef(\ecos,{|reset 0, amp 0.4, res 2, freq 100|
 	var play;
-	//En lugar del MouseY iría freq y recibe la instrucción desde Processing
-	//play =  MoogFF.ar([WhiteNoise.ar(0.2)], MouseY.kr(100, 10000,1), MouseX.kr(0.01, 3,1),reset) !2;
+
 	play =  MoogFF.ar([WhiteNoise.ar(0.2)], freq, res,reset) !2;
+
 	Out.ar(0,play*amp);
 }).add
 )
 
-n= Synth(\ecos);
+// EJECUTAR
+n = Synth(\ecos);
 
-n.set(\amp,1);
+//************************** OSC DEF ***************************//
+// EJECUTAR SOLO SI ES EN LINEA
+// JESUS IP
+// m = NetAddr("22.55.80.116", 57120); // local machine
+// MISA IP
+// m = NetAddr("25.57.148.229", 57120); // local machine
 
-//n = NetAddr("22.55.80.116", 57120); // local machine
-m = NetAddr("25.57.148.229", 57120); // local machine
-
+// EJECUTAR
 (
-o= OSCdef(\points, {arg msg, time, addr, recvPort;
-	var cut, amp;
+o = OSCdef(\points, {arg msg, time, addr, recvPort;
+	var cut, amp, freqOne, freqTwo;
 
 	[msg,time,addr,recvPort].postln;
 
 	cut = msg[1];
 	amp = msg[2];
-	osc = msg[3];
-	osc2 = msg[4];
+	freqOne = msg[3];
+	freqTwo = msg[4];
 
-	n.set(\ecos,[\freq, cut,\amp,amp]);
-	h.set(\harpsi,[\freq, osc, \ffsreq, osc2];
+	n.set(\freq, cut, \amp, amp);
+	h.set(\freq, freqOne, \ffsreq, freqTwo);
+
 },'\points',nil);
 )
