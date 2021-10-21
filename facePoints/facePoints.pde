@@ -118,8 +118,8 @@ public void draw()
     cejaX = map(cejaX, 0, 640, 100, 10000);
     cejaY = map(cejaY, 0, 480, 0, 1);
     
-    bocaX = map(bocaX, 0, 640, 100, 10000);
-    bocaY = map(bocaY, 0, 480, 0.01, 3);
+    bocaX = map(bocaX, 0, 640, 100, 800);
+    bocaY = map(bocaY, 0, 480, 1, 300);
     
     caraX = map(caraX, 0, 640, 0.4, 1);
     caraY = map(caraY, 0, 480, 0, 1);
