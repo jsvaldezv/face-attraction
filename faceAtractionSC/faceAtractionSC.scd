@@ -1,6 +1,7 @@
 s.boot;
-Server.killAll;
+// Play it with the mouse...
 
+<<<<<<< Updated upstream
 ( // load this first - synth def
 SynthDef(\harpsi, {
 	arg outbus = 0, freq = 440, ffreq = 2, amp = 1, gate = 1, release = 1;
@@ -41,10 +42,20 @@ p = Synth(\harpsi);
 p.set(\freq,100);
 p.set(\ffreq,13);
 
+=======
+~path1 =  "/Users/misaelfelix2/Documents/GitHub/faceAtraction/faceAtractionSC/moog_design.wav"
+~buf1 = Buffer.read(s,~path1,bufnum:1);
+~buf1.play;
+x = { MoogFF.ar([WhiteNoise.ar(0.2),PlayBuf.ar(2,1,1,doneAction:2)], MouseY.kr(100, 10000,1), MouseX.kr(0, 4)) !2 }.play(s);
+
+x.free;
+
+>>>>>>> Stashed changes
 (
-SynthDef(\ecos,{|reset 0, amp 0.4, res 2, freq 100|
+SynthDef(\amlo,{|reset 0, amp 0.7, res 2, freq 100|
 	var play;
 	//En lugar del MouseY iría freq y recibe la instrucción desde Processing
+<<<<<<< Updated upstream
 	//play =  MoogFF.ar([WhiteNoise.ar(0.2)], MouseY.kr(100, 10000,1), MouseX.kr(0.01, 3,1),reset) !2;
 	//play =  MoogFF.ar([WhiteNoise.ar(0.2), PlayBuf.ar(2, 1, 1, doneAction:2)], freq, res, reset) !2;
 	play =  MoogFF.ar(WhiteNoise.ar(0.2), freq, res, reset) !2;
@@ -55,6 +66,15 @@ SynthDef(\ecos,{|reset 0, amp 0.4, res 2, freq 100|
 n = Synth(\ecos);
 
 n.set(\amp,1);
+=======
+	//play =  MoogFF.ar([WhiteNoise.ar(0.2),PlayBuf.ar(2,1,1,doneAction:2)], MouseY.kr(100, 10000,1), res,reset) !2;
+	play =  MoogFF.ar([WhiteNoise.ar(0.2),PlayBuf.ar(2,1,1,doneAction:2)], freq, res,reset) !2;
+	Out.ar(0,play*amp);
+}).add
+)
+
+Synth(\amlo);
+>>>>>>> Stashed changes
 
 (
 o= OSCdef(\points, {arg msg, time, addr, recvPort;
@@ -65,6 +85,7 @@ o= OSCdef(\points, {arg msg, time, addr, recvPort;
 	cut = msg[1];
 	amp = msg[2];
 
+<<<<<<< Updated upstream
 	//Synth(\ecos,[\freq, cut,\amp,amp]);
 	n.set(\freq, cut,\amp,amp);
 },'\points',nil);
@@ -74,3 +95,11 @@ OSCFunc.trace(true);
 OSCFunc.trace(false);
 
 //////////////////////////////////////////////
+=======
+	Synth(\amlo,[\freq, cut,\amp,amp]);
+},'\kontrol',nil);
+)
+
+OSCdef.trace(true);
+OSCdef.trace(false);
+>>>>>>> Stashed changes
