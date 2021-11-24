@@ -3,6 +3,7 @@ import processing.javafx.*;
 import ch.bildspur.vision.*;
 import ch.bildspur.vision.result.*;
 import processing.video.Capture;
+import processing.video.*;
 
 //OSC LIBRARIES
 import netP5.*;
@@ -113,11 +114,6 @@ public void draw()
                 bocaX = kp.getX();
                 bocaY = kp.getY();
             }
-
-            /*OscMessage msg = new OscMessage("/bounce");
-            msg.add(cut);
-            msg.add(1);
-            osc.send(msg, remote);*/
         }
     }
 
@@ -182,6 +178,4 @@ public void draw()
     msg.add(caraY);
     
     osc.send(msg, remote);
-
-    surface.setTitle("Face Recognition Test - FPS: " + Math.round(frameRate));
 }
