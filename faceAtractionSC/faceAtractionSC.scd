@@ -58,12 +58,6 @@ SynthDef(\ecos,{|reset 0, amp 0.4, res 2, freq 100|
 n = Synth(\ecos);
 
 //************************** OSC DEF ***************************//
-// EJECUTAR SOLO SI ES EN LINEA
-// JESUS IP
-// m = NetAddr("22.55.80.116", 57120); // local machine
-// MISA IP
-// m = NetAddr("25.57.148.229", 57120); // local machine
-
 // EJECUTAR
 (
 o = OSCdef(\points, {arg msg, time, addr, recvPort;
