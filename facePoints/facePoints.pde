@@ -5,7 +5,7 @@ import ch.bildspur.vision.result.*;
 import processing.video.Capture;
 import processing.video.*;
 
-//OSC LIBRARIES
+// OSC LIBRARIES
 import netP5.*;
 import oscP5.*;
 
@@ -17,7 +17,7 @@ DeepVision vision = new DeepVision(this);
 CascadeClassifierNetwork faceNetwork;
 FacemarkLBFNetwork facemark;
 
-//OSC DEFINITIONS
+// OSC DEFINITIONS
 OscP5 osc;
 NetAddress remote;
 
@@ -52,13 +52,7 @@ public void setup()
     osc = new OscP5(this, 12000);
     //CREAR OBJETO PARA MANDAR INFO
     
-    // PARA CONFIGURAR IP...
-    //SI ES LOCAL
     remote = new NetAddress("127.0.0.1", 57120);
-    //SI SE VA A MANDAR A MISA
-    //remote = new NetAddress("25.57.148.229", 57120);
-    //SI SE VA A MANDAR A JESUS
-    //remote = new NetAddress("25.55.80.116", 57120);
 }
 
 // ************************************************** DRAW ******************************************************* //
