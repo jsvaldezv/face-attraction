@@ -3,6 +3,7 @@ import processing.javafx.*;
 import ch.bildspur.vision.*;
 import ch.bildspur.vision.result.*;
 import processing.video.Capture;
+import processing.video.*;
 
 //OSC LIBRARIES
 import netP5.*;
@@ -113,28 +114,60 @@ public void draw()
                 bocaX = kp.getX();
                 bocaY = kp.getY();
             }
-
-            /*OscMessage msg = new OscMessage("/bounce");
-            msg.add(cut);
-            msg.add(1);
-            osc.send(msg, remote);*/
         }
     }
 
-    // MAPPING
+    //************** MAPPING ONE ***************//
+    if (cejaX <= 0)
+      cejaX = 1;
+    if (cejaX >= 640)
+      cejaX = 639;
+    
     cejaX = map(cejaX, 0, 640, 100, 10000);
+    
+    //************ MAPPING TWO ***************//
+    if (cejaY <= 0)
+      cejaY = 1;
+    if (cejaX >= 480)
+      cejaY = 479;
+      
     cejaY = map(cejaY, 0, 480, 0, 1);
     
+    //************ MAPPING THREE ***************//
+    if (bocaX <= 0)
+      bocaX = 1;
+    if (bocaX >= 640)
+      bocaX = 639;
+      
     bocaX = map(bocaX, 0, 640, 100, 800);
+    
+    //************ MAPPING THREE ***************//
+    if (bocaY <= 0)
+      bocaY = 1;
+    if (bocaY >= 480)
+      bocaY = 479;
+      
     bocaY = map(bocaY, 0, 480, 1, 300);
     
+    //************ MAPPING THREE ***************//
+    if (caraX <= 0)
+      caraX = 1;
+    if (caraX >= 640)
+      caraX = 639;
+      
     caraX = map(caraX, 0, 640, 0.4, 1);
+    //************ MAPPING THREE ***************//
+    if (caraY <= 0)
+      caraY = 1;
+    if (caraY >= 480)
+      caraY = 479;
+      
     caraY = map(caraY, 0, 480, 0, 1);
 
-    // CREAR MENSAJE OSC
+    //************ CREAR MENSAJE OSC ************//
     OscMessage msg = new OscMessage("/points");
 
-    // CONSTRUIR MENSAJE
+    //************ CONSTRUIR MENSAJE ************//
     msg.add(cejaX);
     msg.add(cejaY);
 
@@ -145,6 +178,4 @@ public void draw()
     msg.add(caraY);
     
     osc.send(msg, remote);
-
-    surface.setTitle("Face Recognition Test - FPS: " + Math.round(frameRate));
 }
