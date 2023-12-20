@@ -1,40 +1,35 @@
-//CAMERA LIBRARIES
 import processing.javafx.*;
 import ch.bildspur.vision.*;
 import ch.bildspur.vision.result.*;
 import processing.video.Capture;
 
-//BALLS LIBRARIES
 import shiffman.box2d.*;
 import org.jbox2d.collision.shapes.*;
 import org.jbox2d.common.*;
 import org.jbox2d.dynamics.*;
 
-//OSC LIBRARIES
 import netP5.*;
 import oscP5.*;
 
-//CAMERA LIBRARIES
 Capture cam;
 DeepVision vision;
 ULFGFaceDetectionNetwork network;
 ResultList<ObjectDetectionResult> detections;
 
-//BALLS DEFINITIONS
 Box2DProcessing box2d;
 Mover[] movers = new Mover[25];
 Attractor a;
 
-//OSC DEFINITIONS
 OscP5 osc;
 NetAddress remote;
 
 float amp = 0, cut = 0;
 float xPos = 0, yPos = 0, circleX = 0, circleY = 0;
 int cont = 0;
+
 public void setup() 
 {
-    //CAMERA
+    // Camera
     size(640, 480, FX2D);
     colorMode(HSB, 360, 100, 100);
 
@@ -49,7 +44,7 @@ public void setup()
     cam = new Capture(this, "pipeline:autovideosrc");
     cam.start();
 
-    //BALLS
+    // Balls
     smooth();
     box2d = new Box2DProcessing(this);
     box2d.createWorld();
@@ -59,9 +54,7 @@ public void setup()
     for (int i = 0; i < movers.length; i++) 
         movers[i] = new Mover(random(8,16),random(width),random(height));
 
-    //CREAR OBJETO DE OSC PARA RECIBIR
     osc = new OscP5(this, 12000);
-    //CREAR OBJETO PARA MANDAR INFO
     remote = new NetAddress("127.0.0.1", 57120);
 }
 
@@ -69,7 +62,6 @@ public void draw()
 {
     background(55);
 
-    //CAMERA
     if (cam.available())
         cam.read();
 
@@ -87,8 +79,6 @@ public void draw()
 
     for (ObjectDetectionResult detection : detections)
     {
-        //stroke(0,0,0,0);
-
         circleX = detection.getX();
         circleY = detection.getY();
 
@@ -115,18 +105,14 @@ public void draw()
         float dis = sqrt(pow((xPos-circleX),2) + pow((yPos-circleY),2));
 
         cut = map(dis, 0, 640, 100, 10000);
-        //println(cut);
     }
 
     cont++;
 
-    //if(cont >= 50)
-    //{
-        OscMessage msg = new OscMessage("/kontrol");
-        msg.add(cut);
-        msg.add(1);
-        osc.send(msg, remote);
+	OscMessage msg = new OscMessage("/kontrol");
+	msg.add(cut);
+	msg.add(1);
+	osc.send(msg, remote);
 
-        cont = 0;
-    //}
+	cont = 0;
 }

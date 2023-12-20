@@ -1,35 +1,29 @@
-// ORIGINAL LIBRARIES
 import processing.javafx.*;
 import ch.bildspur.vision.*;
 import ch.bildspur.vision.result.*;
 import processing.video.Capture;
 import processing.video.*;
 
-// OSC LIBRARIES
 import netP5.*;
 import oscP5.*;
 
-// VARIABLE PARA CAMARA
 Capture cam;
 
-// OBJETOS Y VARIABLES PARA DETECTAR CARA
 DeepVision vision = new DeepVision(this);
 CascadeClassifierNetwork faceNetwork;
 FacemarkLBFNetwork facemark;
 
-// OSC DEFINITIONS
 OscP5 osc;
 NetAddress remote;
 
 ResultList<ObjectDetectionResult> detections;
 ResultList<FacialLandmarkResult> markedFaces;
 
-// POSICIONES DE PUNTOS
 float cejaX = 0, cejaY = 0;
 float bocaX = 0, bocaY = 0;
 float caraX = 0, caraY = 0;
 
-// ************************************************** SETUP ******************************************************* //
+
 public void setup() 
 {
     size(640, 480, FX2D);
@@ -48,14 +42,11 @@ public void setup()
     cam = new Capture(this, cams[0]);
     cam.start();
 
-    //CREAR OBJETO DE OSC PARA RECIBIR
-    osc = new OscP5(this, 12000);
-    //CREAR OBJETO PARA MANDAR INFO
-    
+    osc = new OscP5(this, 12000);   
     remote = new NetAddress("127.0.0.1", 57120);
 }
 
-// ************************************************** DRAW ******************************************************* //
+
 public void draw() 
 {
     background(55);
@@ -91,7 +82,7 @@ public void draw()
             // 36 - 48 = Ojos
             // 48 - 68 = Boca
 
-            // CEJAS
+            // Cejas
             if(j >= 17 && j < 27)
             {
                 KeyPointResult kp = landmarks.getKeyPoints().get(j);
@@ -100,7 +91,7 @@ public void draw()
                 cejaY = kp.getY();
             }
 
-            // BOCA
+            // Boca
             else if(j >= 48 && j < 68)
             {
                 KeyPointResult kp = landmarks.getKeyPoints().get(j);
@@ -111,7 +102,7 @@ public void draw()
         }
     }
 
-    //************** MAPPING ONE ***************//
+    // Map one
     if (cejaX <= 0)
       cejaX = 1;
     if (cejaX >= 640)
@@ -119,7 +110,7 @@ public void draw()
     
     cejaX = map(cejaX, 0, 640, 100, 10000);
     
-    //************ MAPPING TWO ***************//
+    // Map two
     if (cejaY <= 0)
       cejaY = 1;
     if (cejaX >= 480)
@@ -127,7 +118,7 @@ public void draw()
       
     cejaY = map(cejaY, 0, 480, 0, 1);
     
-    //************ MAPPING THREE ***************//
+    // Map three
     if (bocaX <= 0)
       bocaX = 1;
     if (bocaX >= 640)
@@ -135,7 +126,7 @@ public void draw()
       
     bocaX = map(bocaX, 0, 640, 100, 800);
     
-    //************ MAPPING THREE ***************//
+    // Map four
     if (bocaY <= 0)
       bocaY = 1;
     if (bocaY >= 480)
@@ -143,14 +134,15 @@ public void draw()
       
     bocaY = map(bocaY, 0, 480, 1, 300);
     
-    //************ MAPPING THREE ***************//
+    // Map five
     if (caraX <= 0)
       caraX = 1;
     if (caraX >= 640)
       caraX = 639;
       
     caraX = map(caraX, 0, 640, 0.4, 1);
-    //************ MAPPING THREE ***************//
+
+    // Map six
     if (caraY <= 0)
       caraY = 1;
     if (caraY >= 480)
@@ -158,10 +150,8 @@ public void draw()
       
     caraY = map(caraY, 0, 480, 0, 1);
 
-    //************ CREAR MENSAJE OSC ************//
     OscMessage msg = new OscMessage("/points");
 
-    //************ CONSTRUIR MENSAJE ************//
     msg.add(cejaX);
     msg.add(cejaY);
 
